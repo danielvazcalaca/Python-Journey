@@ -1,57 +1,26 @@
-cadastrado_usuario = {}
-cadastrado_livro = {}
+usuarios_cadastrados = {}
+livros_cadastrados = {}
 
 
-def usuario_cadastrado():
-    user = input("What is your username?")
-    if user in cadastrado_usuario:
+def cadastrando_usuario():
+    usuario = input("Qual o seu usuario?")
+    if usuario in usuarios_cadastrados:
         print("Usuario já cadastrado")
     else:
-        print("Vamos Criar um usuario!")
-        adicionar_usuario = input("Digite o nome que você deseja: ")
+        adicionar_usuario = input("Usuario não cadastrado, digite o nome que deseja cadastrar! ")
+        usuarios_cadastrados[adicionar_usuario] = adicionar_usuario
+        print("Usuario Cadastrado!")
 
 
-cadastrado_usuario = {}
-cadastrado_livro = {}
+def cadastrando_livro():
+    livro = print("Qual o nome do livro que você deseja cadastrar?")
+    if livro in livros_cadastrados:
+        print("Esse livro já está cadastrado.")
+    else:
+        print("Seu livro foi cadastrado")
 
-
-def usuario_cadastrado():
-     user = input("What is your username?")
-     if user in cadastrado_usuario:
-          print("Usuario já cadastrado")
-     else:
-          print("Vamos Criar um usuario!")
-          adicionar_usuario = input("Digite o nome que você deseja: ")
-
-
-def livro_cadastrado():
-     print(12312312)
-
-
-while True:
-     print("1 - Usuario")
-     print("2 - Cadastrar Livro")
-     print("3 - Olhar Livros Cadastrados")
-     print("4 - Olhar Usuarios Cadastrados")
-     print("9 - Sair")
-     escolha = input("Escolha uma opção: ")
-     if escolha == "1":
-          username()
-     elif escolha == "2":
-          livro_cadastrado()
-     elif escolha == "3":
-          print(cadastrado_livro)
-     elif escolha == "4":
-          print(cadastrado_usuario)
-     elif escolha == "9":
-          print("Tchau")
-          break
-     else:
-          print("Digite um numero de 1 a 9")
-
-def livro_cadastrado():
-    print(12312312)
-
+#
+#
 
 while True:
     print("1 - Usuario")
@@ -61,13 +30,13 @@ while True:
     print("9 - Sair")
     escolha = input("Escolha uma opção: ")
     if escolha == "1":
-        username()
+        cadastrando_usuario()
     elif escolha == "2":
-        livro_cadastrado()
+        cadastrando_livro()
     elif escolha == "3":
         print(cadastrado_livro)
     elif escolha == "4":
-        print(cadastrado_usuario)
+        print(usuarios_cadastrados)
     elif escolha == "9":
         print("Tchau")
         break
