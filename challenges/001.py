@@ -1,44 +1,59 @@
-usuarios_cadastrados = {}
-livros_cadastrados = {}
-
-
-def cadastrando_usuario():
-    usuario = input("Qual o seu usuario?")
-    if usuario in usuarios_cadastrados:
-        print("Usuario já cadastrado")
-    else:
-        adicionar_usuario = input("Usuario não cadastrado, digite o nome que deseja cadastrar! ")
-        usuarios_cadastrados[adicionar_usuario] = adicionar_usuario
-        print("Usuario Cadastrado!")
-
-
-def cadastrando_livro():
-    livro = print("Qual o nome do livro que você deseja cadastrar?")
-    if livro in livros_cadastrados:
-        print("Esse livro já está cadastrado.")
-    else:
-        print("Seu livro foi cadastrado")
+livros = {}
+usuarios = {}
 
 #
+# Adicionar Livro
 #
 
-while True:
-    print("1 - Usuario")
-    print("2 - Cadastrar Livro")
-    print("3 - Olhar Livros Cadastrados")
-    print("4 - Olhar Usuarios Cadastrados")
-    print("9 - Sair")
-    escolha = input("Escolha uma opção: ")
-    if escolha == "1":
-        cadastrando_usuario()
-    elif escolha == "2":
-        cadastrando_livro()
-    elif escolha == "3":
-        print(cadastrado_livro)
-    elif escolha == "4":
-        print(usuarios_cadastrados)
-    elif escolha == "9":
-        print("Tchau")
-        break
+def adicionar_livro():
+    livro = input("Qual livro deseja adicionar?")
+    if livro in livros:
+        print("Este livro já existe!")
     else:
-        print("Digite um numero de 1 a 9")
+        livros[livro] = livro
+        print(f"Livro adicionado com sucesso! ({livro})")
+
+#
+# Adicionar Usuario
+#
+
+def adicionar_usuario():
+    usuario = input("Qual usuario deseja adicionar?")
+    if usuario in usuarios:
+        print(f"O usuario {usuario} já existe!")
+    else:
+        usuarios[usuario] = usuario
+        print(f"Usuario adicionado com sucesso! ({usuario})")
+
+
+
+def menu_principal():
+    while True:
+        print("\n/// Biblioteca ///")
+        print("1 - Adicionar Livro")
+        print("2 - Adicionar Usuário")
+        print("3 - Mostrar Relatório de um Livro")
+        print("4 - Mostrar Relatório de um Usuário")
+        print("5 - Sair")
+
+        opcao = input("Escolha uma opção: ")
+
+        if opcao == "1":
+            adicionar_livro()
+        elif opcao == "2":
+            adicionar_usuario()
+        elif opcao == "3":
+            mostrar_relatorio_livro()
+        elif opcao == "4":
+            mostrar_relatorio_usuario()
+        elif opcao == "5":
+            mostrar_relatorio_livro()
+        elif opcao == "6":
+            print("Saindo do sistema...")
+            break
+        else:
+            print("Opção inválida, tente novamente.")
+
+
+# Menu
+menu_principal()
