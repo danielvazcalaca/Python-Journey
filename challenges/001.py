@@ -28,16 +28,15 @@ usuarios = {
 }
 
 def acessar_biblioteca():
+    print("\n Uma estante com todos os livros da biblioteca!")
     for id_livro, livro in livros.items():
-        status = "Disponível" if livro[
-            "disponivel"] else f"Emprestado para {usuarios[livro['usuario']]['nome']}"
-        print(f"\n> ID: {id_livro}\n> Título: {livro['titulo']}")
+        print(f"> // {livro['titulo']} //")
 
 
 # Função que adiciona um livro
 
 def adicionar_livro():
-    id_usuario = input("Digite o id do usuário que irá receber um novo livro: ")
+    id_usuario = input("\nDigite o id do usuário que irá receber um novo livro: ")
     if id_usuario not in usuarios:
         print("Este usuário não existe.")
     else:
@@ -60,7 +59,7 @@ def adicionar_livro():
 # Função que adiciona um usuario
 
 def adicionar_usuario():
-    id_usuario = input("Qual o id do usuário que deseja adicionar? ")
+    id_usuario = input("\nQual o id do usuário que deseja adicionar? ")
     if id_usuario in usuarios:
         print("\n>>>>> ESTE USUÁRIO JÁ ESTÁ CADASTRADO <<<<<")
     else:
@@ -78,14 +77,14 @@ def adicionar_usuario():
 # Função que empresta um livro
 
 def emprestar_livro():
-    print("Digite o ID do livro: ")
+    print("\nDigite o ID do livro: ")
     for id_livro, livro in livros.items():
         status = "Disponível" if livro[
             "disponivel"] else f"Emprestado para {usuarios[livro['usuario']]['nome']}"
         print(f"> ID: {id_livro} -- Título: {livro['titulo']}")
     id_livro = input("Digite o ID do que deseja: ")
 
-    print("Digite o ID do usuário: ")
+    print("\nDigite o ID do usuário: ")
     if usuarios:
         for id_usuario, usuario in usuarios.items():
             print(
@@ -108,7 +107,7 @@ def emprestar_livro():
 # Função que devolve um livro
 
 def devolver_livro():
-    print("Digite o ID do livro: ")
+    print("\nDigite o ID do livro: ")
     for id_livro, livro in livros.items():
         status = "Disponível" if livro[
             "disponivel"] else f"Emprestado para {usuarios[livro['usuario']]['nome']}"
@@ -130,7 +129,7 @@ def devolver_livro():
 # Função para mostrar o relatório de um livro
 
 def mostrar_relatorio_livro():
-    id_livro = input("Digite o ID do livro: ")
+    id_livro = input("\nDigite o ID do livro: ")
 
     if id_livro in livros:
         livro = livros[id_livro]
@@ -155,7 +154,7 @@ def mostrar_relatorio_todos_livros():
 # Função para mostrar o relatório de um usuario
 
 def mostrar_relatorio_usuario():
-    id_usuario = input("Digite o ID do usuário: ")
+    id_usuario = input("\nDigite o ID do usuário: ")
 
     if id_usuario in usuarios:
         usuario = usuarios[id_usuario]
@@ -221,7 +220,7 @@ def menu_principal():
 def menu_inicial():
     while True:
         print("\n>>> Biblioteca <<<")
-        print("1 - Acessar Meus livros")
+        print("1 - Estante de Livros")
         print("2 - Acessar Menu Principal")
         print("3 - Fechar Biblioteca")
 
