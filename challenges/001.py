@@ -1,48 +1,99 @@
-livros = {}
-usuarios = {}
+# Dicionários de exemplo para livros e usuários
+livros = {
+    "101": {
+        "titulo": "O Senhor dos Anéis",
+        "autor": "J.R.R. Tolkien",
+        "disponivel": True,
+        "usuario": None
+    },
+    "102": {
+        "titulo": "1984",
+        "autor": "George Orwell",
+        "disponivel": False,
+        "usuario": "001"
+    }
+}
 
-# Função para adicionar livro
+usuarios = {
+    "001": {
+        "nome": "João Silva",
+        "id_usuario": "001",
+        "livros_emprestados": ["102"]
+    },
+    "002": {
+        "nome": "Maria Oliveira",
+        "id_usuario": "002",
+        "livros_emprestados": []
+    }
+}
+
+def acessar_biblioteca():
+    for id_livro, livro in livros.items():
+        status = "Disponível" if livro[
+            "disponivel"] else f"Emprestado para {usuarios[livro['usuario']]['nome']}"
+        print(f"\n> ID: {id_livro}\n> Título: {livro['titulo']}")
+
+
+# Função que adiciona um livro
 
 def adicionar_livro():
-    id_livro = input("Qual o id do livro que deseja adicionar?")
-    if id_livro in livros:
-        print("Este livro já esta cadastrado.")
-
+    id_usuario = input("Digite o id do usuário que irá receber um novo livro: ")
+    if id_usuario not in usuarios:
+        print("Este usuário não existe.")
     else:
-        titulo = input("Digite o título do livro: ")
-        autor = input("Digite o autor do livro: ")
-        livros[id_livro] = {
-            "Titulo": titulo,
-            "Autor": autor,
-            "Disponivel": True,
-            "Usuario": None
-        }
-        print("Livro adicionado com sucesso!!!")
+        id_livro = input("Qual o id do livro que deseja adicionar? ")
+        if id_livro in livros:
+            print("\n>>>>> ESTE LIVRO JÁ ESTÁ CADASTRADO <<<<<")
+        else:
+            titulo = input("Digite o título do livro: ")
+            autor = input("Digite o autor do livro: ")
+            livros[id_livro] = {
+                "Titulo": titulo,
+                "Autor": autor,
+                "Disponivel": True,
+                "Usuario": id_usuario,
+            }
+            print("\n>>>>> LIVRO CADASTRADO COM SUCESSO <<<<<")
+            print(f"> Titulo: {titulo}\n> Autor: {autor}")
 
-# Função para adicionar usuario
+
+# Função que adiciona um usuario
 
 def adicionar_usuario():
-    id_usuario = input("Qual o id do usuario que deseja adicionar?")
-    usuario_existe = id_usuario in usuarios
-    if usuario_existe:
-        print("Este usuario já esta cadastrado.")
+    id_usuario = input("Qual o id do usuário que deseja adicionar? ")
+    if id_usuario in usuarios:
+        print("\n>>>>> ESTE USUÁRIO JÁ ESTÁ CADASTRADO <<<<<")
     else:
-        nome = input("Digite o nome do usuário: ")
+        nome_usuario = input("Digite o nome do usuário: ")  # Renomeado para evitar confusão
         usuarios[id_usuario] = {
-            "nome": nome,
+            "nome": nome_usuario,
+            "id_usuario": id_usuario,
             "livros_emprestados": []
         }
-        print("Usuário adicionado com sucesso.")
-        print(usuarios[id_usuario])
+        print("\n>>>>> USUÁRIO CADASTRADO COM SUCESSO <<<<<")
+        print(f"\n> ID: {id_usuario}\n> Nome: {usuarios[id_usuario]['nome']}\n> Livros emprestados: {usuarios[id_usuario]['livros_emprestados']}")
 
-# Função para emprestar livro
+
+
+# Função que empresta um livro
 
 def emprestar_livro():
-    id_livro = input("Digite o ID do livro: ")
-    id_usuario = input("Digite o ID do usuário: ")
+    print("Digite o ID do livro: ")
+    for id_livro, livro in livros.items():
+        status = "Disponível" if livro[
+            "disponivel"] else f"Emprestado para {usuarios[livro['usuario']]['nome']}"
+        print(f"> ID: {id_livro} -- Título: {livro['titulo']}")
+    id_livro = input("Digite o ID do que deseja: ")
+
+    print("Digite o ID do usuário: ")
+    if usuarios:
+        for id_usuario, usuario in usuarios.items():
+            print(
+                f"> ID: {usuario['id_usuario']} -- Nome: {usuario['nome']}")
+    id_usuario = input("Digite o ID do que deseja: ")
 
     if id_livro not in livros:
-        print("Livro não encontrado.")
+        print("\n>>>>> ESTE LIVRO NÃO ESTA CADASTRADO NO SISTEMA <<<<<")
     elif not livros[id_livro]["disponivel"]:
         print("Livro já foi emprestado.")
     elif id_usuario not in usuarios:
@@ -51,12 +102,18 @@ def emprestar_livro():
         livros[id_livro]["disponivel"] = False
         livros[id_livro]["usuario"] = id_usuario
         usuarios[id_usuario]["livros_emprestados"].append(id_livro)
-        print(f"Livro '{livros[id_livro]['titulo']}' emprestado com sucesso para {usuarios[id_usuario]['nome']}.")
+        print(f">>>>> O livro '{livros[id_livro]['titulo']}' foi emprestado com sucesso para {usuarios[id_usuario]['nome']}. <<<<<")
 
-# Função para devolver um livro
+
+# Função que devolve um livro
 
 def devolver_livro():
-    id_livro = input("Digite o ID do livro: ")
+    print("Digite o ID do livro: ")
+    for id_livro, livro in livros.items():
+        status = "Disponível" if livro[
+            "disponivel"] else f"Emprestado para {usuarios[livro['usuario']]['nome']}"
+        print(f"> ID: {id_livro} -- Título: {livro['titulo']}")
+    id_livro = input("Digite o ID do que deseja: ")
 
     if id_livro not in livros:
         print("Livro não encontrado.")
@@ -69,7 +126,8 @@ def devolver_livro():
         livros[id_livro]["usuario"] = None
         print(f"Livro '{livros[id_livro]['titulo']}' devolvido com sucesso.")
 
-# Função para mostrar o relatorio de um livro
+
+# Função para mostrar o relatório de um livro
 
 def mostrar_relatorio_livro():
     id_livro = input("Digite o ID do livro: ")
@@ -77,60 +135,65 @@ def mostrar_relatorio_livro():
     if id_livro in livros:
         livro = livros[id_livro]
         status = "Disponível" if livro["disponivel"] else f"Emprestado para {usuarios[livro['usuario']]['nome']}"
-        print(f"ID: {id_livro}, Título: {livro['titulo']}, Autor: {livro['autor']}, Status: {status}")
+        print(f"\n> ID: {id_livro}\n> Título: {livro['titulo']}\n> Autor: {livro['autor']}\n> Status: {status}")
     else:
         print("Livro não encontrado.")
 
-# Função para mostrar o relatorio de todos os livros
+
+# Função para mostrar o relatório de todos os livros
 
 def mostrar_relatorio_todos_livros():
     if livros:
         for id_livro, livro in livros.items():
-            status = "Disponível" if livro["disponivel"] else f"Emprestado para {usuarios[livro['usuario']]['nome']}"
-            print(f"ID: {id_livro}, Título: {livro['titulo']}, Autor: {livro['autor']}, Status: {status}")
+            status = "Disponível" if livro[
+                "disponivel"] else f"Emprestado para {usuarios[livro['usuario']]['nome']}"
+            print(f"\n> ID: {id_livro}\n> Título: {livro['titulo']}\n> Autor: {livro['autor']}\n> Status: {status}")
     else:
         print("Nenhum livro cadastrado.")
 
 
-# Função para mostrar o relatorio de um usuario
+# Função para mostrar o relatório de um usuario
+
 def mostrar_relatorio_usuario():
     id_usuario = input("Digite o ID do usuário: ")
 
     if id_usuario in usuarios:
         usuario = usuarios[id_usuario]
-        print(f"Nome: {usuario['nome']}, Livros emprestados: {usuario['livros_emprestados']}")
+        print(f"\n> Nome: {usuario['nome']}\n> ID: {usuario["id_usuario"]}\n> Livros emprestados: {usuario['livros_emprestados']}")
     else:
         print("Usuário não encontrado.")
 
-# Função para mostrar o relatorio de todos os usuarios
+
+# Função para mostrar o relatório de todos os usuários
 
 def mostrar_relatorio_todos_usuarios():
     if usuarios:
         for id_usuario, usuario in usuarios.items():
-            print(f"ID: {id_usuario}, Nome: {usuario['nome']}, Livros emprestados: {usuario['livros_emprestados']}")
+            print(
+                f"\n> Nome: {usuario['nome']}\n> ID: {usuario['id_usuario']}\n> Livros emprestados: {usuario['livros_emprestados']}")
     else:
         print("Nenhum usuário cadastrado.")
 
 
-#
-#   Menu Principal em Loop
-#
 
+
+
+# Função que deixa o menu principal em loop
 
 def menu_principal():
     while True:
-        print("\nSistema de Gerenciamento de Biblioteca")
-        print("1. Adicionar Novo Livro")
-        print("2. Adicionar Novo Usuário")
-        print("3. Emprestar Livro")
-        print("4. Devolver Livro")
-        print("5. Mostrar Relatório de um Livro")
-        print("6. Mostrar Relatório de Todos os Livros")
-        print("7. Mostrar Relatório de um Usuário")
-        print("8. Mostrar Relatório de Todos os Usuários")
-        print("9. Sair")
+        print("\n>>> Menu Principal <<<")
+        print("1 - Adicionar Livro")
+        print("2 - Adicionar Usuário")
+        print("3 - Emprestar Livro")
+        print("4 - Devolver Livro")
+        print("5 - Relatório de um Livro")
+        print("6 - Relatório de Todos os Livros")
+        print("7 - Relatório de um Usuário")
+        print("8 - Relatório de Todos os Usuários")
+        print("9 - Sair")
 
-        opcao = input("Escolha uma opção: ")
+        opcao = input("Escolha uma opção: \n>> ")
 
         if opcao == '1':
             adicionar_livro()
@@ -149,11 +212,30 @@ def menu_principal():
         elif opcao == '8':
             mostrar_relatorio_todos_usuarios()
         elif opcao == '9':
-            print("Saindo do sistema...")
+            print("Saindo do menu principal...")
             break
         else:
             print("Opção inválida. Tente novamente.")
 
 
-# Ativa o MENU
-menu_principal()
+def menu_inicial():
+    while True:
+        print("\n>>> Biblioteca <<<")
+        print("1 - Acessar Meus livros")
+        print("2 - Acessar Menu Principal")
+        print("3 - Fechar Biblioteca")
+
+        opcao = input("Escolha uma opção: \n>> ")
+
+        if opcao == "1":
+            acessar_biblioteca()
+        elif opcao == "2":
+            menu_principal()
+        elif opcao == "3":
+            print("\nFechando biblioteca...\n")
+            break
+        else:
+            print("Digite uma opção valida.")
+
+# Ativa o menu principal
+menu_inicial()
