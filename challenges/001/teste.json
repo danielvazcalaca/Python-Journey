@@ -1,0 +1,41 @@
+{
+    "livros": {
+        "101": {
+            "titulo": "O Senhor dos An\u00c3\u00a9is",
+            "autor": "J.R.R. Tolkien",
+            "disponivel": true,
+            "usuario": null
+        },
+        "102": {
+            "titulo": "1984",
+            "autor": "George Orwell",
+            "disponivel": false,
+            "usuario": "001"
+        },
+        "novo_id": {
+            "titulo": "Novo Livro",
+            "autor": "Autor Desconhecido",
+            "disponivel": true,
+            "usuario": null
+        }
+    },
+    "usuarios": {
+        "001": {
+            "nome": "Jo\u00c3\u00a3o Silva",
+            "id_usuario": "001",
+            "livros_emprestados": [
+                "102"
+            ]
+        },
+        "002": {
+            "nome": "Maria Oliveira",
+            "id_usuario": "002",
+            "livros_emprestados": []
+        },
+        "003": {
+            "nome": "Carlos",
+            "id_usuario": "003",
+            "livros_emprestados": []
+        }
+    }
+}

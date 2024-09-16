@@ -1,31 +1,37 @@
-# Dicionários de exemplo para livros e usuários
-livros = {
-    "101": {
-        "titulo": "O Senhor dos Anéis",
-        "autor": "J.R.R. Tolkien",
-        "disponivel": True,
-        "usuario": None
-    },
-    "102": {
-        "titulo": "1984",
-        "autor": "George Orwell",
-        "disponivel": False,
-        "usuario": "001"
-    }
-}
+import json
+import os
 
-usuarios = {
-    "001": {
-        "nome": "João Silva",
-        "id_usuario": "001",
-        "livros_emprestados": ["102"]
-    },
-    "002": {
-        "nome": "Maria Oliveira",
-        "id_usuario": "002",
-        "livros_emprestados": []
-    }
-}
+json_file = "teste.json"
+
+# Dicionários de exemplo para livros e usuários
+livros = {}
+usuarios = {}
+
+# Função para carregar os dados do JSON
+def carregar_dados():
+    if os.path.exists(json_file):
+        with open(json_file, "r") as f:
+            dados = json.load(f)
+            livros.update(dados.get("livros", {}))
+            usuarios.update(dados.get("usuarios", {}))
+    else:
+        print(f"{json_file} não existe, criando um novo...")
+
+# Função para salvar os dados no JSON
+def salvar_dados():
+    with open(json_file, "w") as f:
+        json.dump({"livros": livros, "usuarios": usuarios}, f, indent=4)
+
+# Função para adicionar um valor novo ao dicionário e salvar no JSON
+def adicionar_ao_dicionario(dicionario, chave, valor):
+    dicionario[chave] = valor
+    salvar_dados()
+
+carregar_dados()
+
+
+
+# Acessa uma estante de livros / biblioteca
 
 def acessar_biblioteca():
     print("\n Uma estante com todos os livros da biblioteca!")
@@ -38,7 +44,7 @@ def acessar_biblioteca():
 def adicionar_livro():
     id_usuario = input("\nDigite o id do usuário que irá receber um novo livro: ")
     if id_usuario not in usuarios:
-        print("Este usuário não existe.")
+        print(">>>>> ESTE USUARIO NÃO EXISTE <<<<<")
     else:
         id_livro = input("Qual o id do livro que deseja adicionar? ")
         if id_livro in livros:
@@ -77,10 +83,8 @@ def adicionar_usuario():
 # Função que empresta um livro
 
 def emprestar_livro():
-    print("\nDigite o ID do livro: ")
+    print("\nQual livro você deseja emprestar? ")
     for id_livro, livro in livros.items():
-        status = "Disponível" if livro[
-            "disponivel"] else f"Emprestado para {usuarios[livro['usuario']]['nome']}"
         print(f"> ID: {id_livro} -- Título: {livro['titulo']}")
     id_livro = input("Digite o ID do que deseja: ")
 
@@ -94,7 +98,7 @@ def emprestar_livro():
     if id_livro not in livros:
         print("\n>>>>> ESTE LIVRO NÃO ESTA CADASTRADO NO SISTEMA <<<<<")
     elif not livros[id_livro]["disponivel"]:
-        print("Livro já foi emprestado.")
+        print(">>>>> LIVRO JÁ FOI EMPRESTADO <<<<<")
     elif id_usuario not in usuarios:
         print("Usuário não encontrado.")
     else:
@@ -107,15 +111,13 @@ def emprestar_livro():
 # Função que devolve um livro
 
 def devolver_livro():
-    print("\nDigite o ID do livro: ")
+    print("\nQual livro você deseja devolver? ")
     for id_livro, livro in livros.items():
-        status = "Disponível" if livro[
-            "disponivel"] else f"Emprestado para {usuarios[livro['usuario']]['nome']}"
         print(f"> ID: {id_livro} -- Título: {livro['titulo']}")
     id_livro = input("Digite o ID do que deseja: ")
 
     if id_livro not in livros:
-        print("Livro não encontrado.")
+        print(">>>>> LIVRO NÃO ENCONTRADO <<<<<")
     elif livros[id_livro]["disponivel"]:
         print("Livro já está disponível.")
     else:
@@ -129,14 +131,18 @@ def devolver_livro():
 # Função para mostrar o relatório de um livro
 
 def mostrar_relatorio_livro():
-    id_livro = input("\nDigite o ID do livro: ")
+    print("\nQual dos livros abaixo você gostaria de receber um relatorio? ")
+    for id_livro, livro in livros.items():
+        print(f"> ID: {id_livro} -- Título: {livro['titulo']}")
+    id_livro = input("Digite o ID do livro: ")
+
 
     if id_livro in livros:
         livro = livros[id_livro]
         status = "Disponível" if livro["disponivel"] else f"Emprestado para {usuarios[livro['usuario']]['nome']}"
         print(f"\n> ID: {id_livro}\n> Título: {livro['titulo']}\n> Autor: {livro['autor']}\n> Status: {status}")
     else:
-        print("Livro não encontrado.")
+        print(">>>>> LIVRO NÃO ENCONTRADO <<<<<")
 
 
 # Função para mostrar o relatório de todos os livros
@@ -148,19 +154,24 @@ def mostrar_relatorio_todos_livros():
                 "disponivel"] else f"Emprestado para {usuarios[livro['usuario']]['nome']}"
             print(f"\n> ID: {id_livro}\n> Título: {livro['titulo']}\n> Autor: {livro['autor']}\n> Status: {status}")
     else:
-        print("Nenhum livro cadastrado.")
+        print(">>>>> NENHUM LIVRO CADASTRADO <<<<<")
 
 
 # Função para mostrar o relatório de um usuario
 
 def mostrar_relatorio_usuario():
-    id_usuario = input("\nDigite o ID do usuário: ")
+    print("\nQual dos usuarios abaixo você gostaria de receber um relatorio? ")
+    if usuarios:
+        for id_usuario, usuario in usuarios.items():
+            print(
+                f"> ID: {usuario['id_usuario']} -- Nome: {usuario['nome']}")
+    id_usuario = input("Digite o ID do que deseja: ")
 
     if id_usuario in usuarios:
         usuario = usuarios[id_usuario]
         print(f"\n> Nome: {usuario['nome']}\n> ID: {usuario["id_usuario"]}\n> Livros emprestados: {usuario['livros_emprestados']}")
     else:
-        print("Usuário não encontrado.")
+        print(">>>>> USUARIO NÃO ENCONTRADO <<<<<")
 
 
 # Função para mostrar o relatório de todos os usuários
@@ -171,7 +182,7 @@ def mostrar_relatorio_todos_usuarios():
             print(
                 f"\n> Nome: {usuario['nome']}\n> ID: {usuario['id_usuario']}\n> Livros emprestados: {usuario['livros_emprestados']}")
     else:
-        print("Nenhum usuário cadastrado.")
+        print(">>>>> NENHUM USUARIO CADASTRADO <<<<<")
 
 
 
@@ -212,6 +223,7 @@ def menu_principal():
             mostrar_relatorio_todos_usuarios()
         elif opcao == '9':
             print("Saindo do menu principal...")
+            adicionar_ao_dicionario(livros, 'novo_id', {'titulo': 'Novo Livro', 'autor': 'Autor Desconhecido', 'disponivel': True, 'usuario': None})
             break
         else:
             print("Opção inválida. Tente novamente.")
@@ -232,6 +244,7 @@ def menu_inicial():
             menu_principal()
         elif opcao == "3":
             print("\nFechando biblioteca...\n")
+            adicionar_ao_dicionario(livros, 'novo_id', {'titulo': 'Novo Livro', 'autor': 'Autor Desconhecido', 'disponivel': True, 'usuario': None})
             break
         else:
             print("Digite uma opção valida.")
