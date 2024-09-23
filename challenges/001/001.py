@@ -20,7 +20,7 @@ def carregar_dados():
 # Função para salvar os dados no JSON
 def salvar_dados():
     with open(json_file, "w") as f:
-        json.dump({"livros": livros, "usuarios": usuarios}, f, indent=4)
+        json.dump({"livros": livros, "usuarios": usuarios}, f, indent=2)
 
 # Função para adicionar um valor novo ao dicionário e salvar no JSON
 def adicionar_ao_dicionario(dicionario, chave, valor):
@@ -42,24 +42,20 @@ def acessar_biblioteca():
 # Função que adiciona um livro
 
 def adicionar_livro():
-    id_usuario = input("\nDigite o id do usuário que irá receber um novo livro: ")
-    if id_usuario not in usuarios:
-        print(">>>>> ESTE USUARIO NÃO EXISTE <<<<<")
+    id_livro = input("Digite o ID do seu novo livro: ")
+    if id_livro in livros:
+        print(">>>>> ESTE LIVRO JÁ EXISTE<<<<<")
     else:
-        id_livro = input("Qual o id do livro que deseja adicionar? ")
-        if id_livro in livros:
-            print("\n>>>>> ESTE LIVRO JÁ ESTÁ CADASTRADO <<<<<")
-        else:
-            titulo = input("Digite o título do livro: ")
-            autor = input("Digite o autor do livro: ")
-            livros[id_livro] = {
-                "Titulo": titulo,
-                "Autor": autor,
-                "Disponivel": True,
-                "Usuario": id_usuario,
-            }
-            print("\n>>>>> LIVRO CADASTRADO COM SUCESSO <<<<<")
-            print(f"> Titulo: {titulo}\n> Autor: {autor}")
+        titulo = input("Digite o título do livro: ")
+        autor = input("Digite o autor do livro: ")
+        livros[id_livro] = {
+            "titulo": titulo,
+            "autor": autor,
+            "disponivel": True,
+            "livro": id_livro
+        }
+        print("\n>>>>> LIVRO CADASTRADO COM SUCESSO <<<<<")
+        print(f"> Titulo: {titulo}\n> Autor: {autor}")
 
 
 # Função que adiciona um usuario
@@ -139,8 +135,8 @@ def mostrar_relatorio_livro():
 
     if id_livro in livros:
         livro = livros[id_livro]
-        status = "Disponível" if livro["disponivel"] else f"Emprestado para {usuarios[livro['usuario']]['nome']}"
-        print(f"\n> ID: {id_livro}\n> Título: {livro['titulo']}\n> Autor: {livro['autor']}\n> Status: {status}")
+        status = "disponível" if livro["disponivel"] else f"Emprestado para {usuarios[livro['usuario']]['nome']}"
+        print(f"\n> ID: {id_livro}\n> Título: {livro['titulo']}\n> Autor: {livro['autor']}\n> status: {status}")
     else:
         print(">>>>> LIVRO NÃO ENCONTRADO <<<<<")
 
@@ -150,7 +146,7 @@ def mostrar_relatorio_livro():
 def mostrar_relatorio_todos_livros():
     if livros:
         for id_livro, livro in livros.items():
-            status = "Disponível" if livro[
+            status = "disponível" if livro[
                 "disponivel"] else f"Emprestado para {usuarios[livro['usuario']]['nome']}"
             print(f"\n> ID: {id_livro}\n> Título: {livro['titulo']}\n> Autor: {livro['autor']}\n> Status: {status}")
     else:
